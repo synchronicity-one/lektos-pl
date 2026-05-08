@@ -1,6 +1,5 @@
 "use client";
 import { useState, useEffect } from "react";
-
 // --- dane ---
 const NAV_ITEMS = [
   { label: "Start", id: "start" },
@@ -8,7 +7,6 @@ const NAV_ITEMS = [
   { label: "Funkcje", id: "funkcje" },
   { label: "Wdrożenie", id: "wdrozenie" },
 ];
-
 const AKRONIM = [
   { letter: "L", title: "LINKS", meaning: "your systems", desc: "łączy Twoje systemy w jedną całość" },
   { letter: "E", title: "EXECUTES", meaning: "tasks automatically", desc: "wykonuje zadania automatycznie, bez ręcznej obsługi" },
@@ -17,104 +15,66 @@ const AKRONIM = [
   { letter: "O", title: "OPERATES", meaning: "24/7", desc: "działa bez przerwy, 24 godziny na dobę" },
   { letter: "S", title: "SCALES", meaning: "with your business", desc: "skaluje się razem z rozwojem Twojej firmy" },
 ];
-
-const FILOZOFIA = [
+const SYSTEM_ELEMENTS = [
   {
-    title: "Brak vendor lock-in",
-    desc: "Cały system możesz przenieść na własną infrastrukturę w każdej chwili. Nie płacisz za zadania ani uruchomienia.",
+    title: "Programy współpracujące ze sobą",
+    desc: "Rdzeń operacyjny. To programy wykonują pracę - czytają dane, transformują je, generują raporty, wysyłają maile, podejmują decyzje. Nie są odizolowane: wynik jednego programu jest wejściem dla drugiego. Razem tworzą ciąg operacji, który wcześniej wykonywał człowiek.",
+    desc2: "Część programów korzysta z AI: LLM (statystyczna, językowa) do rozumienia tekstu i pytań w naturalnym języku, oraz AI symbolicznej (Prolog - regułowa, logiczna) do zapisywania twardych reguł biznesowych. Symboliczna AI to inny paradygmat - regułami logicznymi wyraża się reguły, których LLM nie zagwarantuje (np. że klient X ma cennik Y, albo że jeżeli paczka idzie do strefy Z, to dolicza się kwota Q). Razem te dwa podejścia dają system, który rozumie pytania jak człowiek, ale przestrzega reguł jak księgowy.",
+    wide: true,
   },
   {
-    title: "Brak limitów platform",
-    desc: "Nie ma sufitu wykonań, brakujących konektorów ani limitów przepustowości narzuconych z zewnątrz.",
+    title: "Konektory do systemów zewnętrznych",
+    desc: "Programy nie działają w próżni - muszą sięgać do systemów, które już w firmie są: ERP, CRM, e-commerce, magazyn, kurierzy. Konektory to mosty komunikacyjne, przez które Lektos czerpie dane i wykonuje akcje w tych systemach. Komunikacja z ludźmi to osobny kanał - poczta, czat, formularze - obsługiwany przez dedykowane moduły wejścia i wyjścia.",
   },
   {
-    title: "Pełny dostęp do logiki",
-    desc: "Każdy skrypt, integracja, raport to czytelny kod w repozytorium git. Audytowalny, wersjonowany, odwracalny.",
+    title: "Harmonogram",
+    desc: "Programy muszą się cyklicznie uruchamiać - codziennie, co godzinę, na koniec miesiąca. Harmonogram to zegar systemu. Decyduje, kiedy uruchomić który program, w jakiej kolejności, z jakimi parametrami.",
   },
   {
-    title: "Stabilność",
-    desc: "Bazujemy na technologiach sprawdzonych przez dekady w produkcji. Bez ryzyka nagłej zmiany warunków, modelu rozliczeń czy przejęcia.",
+    title: "Baza wiedzy",
+    desc: "Dane firmy, z których programy korzystają. Konfiguracje klientów, cenniki, reguły, dokumentacje procesów, historia operacji. Bez bazy wiedzy programy nie wiedzą, jak postępować - z nią działają zgodnie z kontekstem firmy.",
   },
   {
-    title: "Bezpieczeństwo",
-    desc: "Dane nie wychodzą poza Twoją infrastrukturę jeśli tak zdecydujesz. Pełna kontrola nad tym co i gdzie jest przetwarzane.",
+    title: "Panel czatowy",
+    desc: "Interfejs dla pracownika. Przez panel pracownik zadaje pytania w naturalnym języku i wydaje polecenia. Panel łączy LLM z dostępem do programów, konektorów i bazy wiedzy - dzięki temu odpowiedzi opierają się na rzeczywistych danych, a nie ogólnej wiedzy modelu.",
+  },
+  {
+    title: "Dedykowana infrastruktura",
+    desc: "To wszystko działa na dedykowanej infrastrukturze, którą przygotowujemy i dostarczamy - udostępnionej przez nas lub przygotowanej na zasobach klienta. Programy, konektory, harmonogram, baza wiedzy i panel czatowy nie żyją w chmurze obcych dostawców - są wdrożone na konkretnych serwerach nadzorowanych przez nas.",
+    wide: true,
   },
 ];
-
-
 const FUNKCJE = [
-  {
-    title: "Automatyzacja skrzynki mailowej",
-    desc: "System czyta przychodzące wiadomości, klasyfikuje je i wykonuje akcje automatycznie. Pracownik może też wydać polecenie przez czat - wysłać, skasować, przenieść, oflagować wiadomość bez otwierania skrzynki.",
-    icon: (
-      <svg width="28" height="28" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
-        <rect x="2" y="4" width="20" height="16" rx="2"/>
-        <path d="M2 7l10 7 10-7"/>
-      </svg>
-    ),
-  },
-  {
-    title: "Automatyczne raporty",
-    desc: "Lektos generuje raporty na podstawie danych z Twoich systemów i wysyła je według harmonogramu lub na żądanie. Modułowy silnik raportów pozwala dodać nowy raport bez pisania skryptu od zera.",
-    icon: (
-      <svg width="28" height="28" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
-        <rect x="3" y="3" width="18" height="18" rx="2"/>
-        <path d="M8 17V13M12 17V9M16 17V11"/>
-      </svg>
-    ),
-  },
-  {
-    title: "Panel w języku naturalnym",
-    desc: "Pracownicy zadają pytania (ile zamówień wczoraj, pokaż nieopłacone faktury, wyślij raport miesięczny) i otrzymują odpowiedzi oparte na danych z podłączonych systemów w czasie rzeczywistym.",
-    icon: (
-      <svg width="28" height="28" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
-        <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
-      </svg>
-    ),
-  },
   {
     title: "Integracje API",
     desc: "Lektos łączy się z Twoimi systemami przez API. Mamy działające integracje z Way2Send, EasyStorage, INSEE/iStruct, LoMag, Mettler Toledo, IMAP/SMTP, FTP/SFTP, MS SQL Server, PostgreSQL, MySQL/MariaDB. Dla nowych systemów piszemy dedykowany konektor w Pythonie.",
-    icon: (
-      <svg width="28" height="28" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
-        <circle cx="12" cy="12" r="3"/>
-        <path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/>
-      </svg>
-    ),
+    wide: true,
   },
   {
     title: "Konektory MCP",
     desc: "Lektos buduje konektory MCP (Model Context Protocol) - protokół pozwalający modelom AI (Claude, ChatGPT, lokalne LLM) operować na Twoich plikach, bazach danych, mailach, repozytoriach git i systemach zewnętrznych. AI nie tylko czyta dane, ale wykonuje akcje przez ustandaryzowany interfejs.",
-    icon: (
-      <svg width="28" height="28" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
-        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-        <path d="M2 17l10 5 10-5"/>
-        <path d="M2 12l10 5 10-5"/>
-      </svg>
-    ),
   },
   {
-    title: "API dla integratorów",
-    desc: "Lektos API to multi-tenant warstwa REST/JSON, której mogą używać integratorzy Twoich systemów zewnętrznych. Własny system raportujący może wystawić dane do Lektosa standardowym API zamiast pisać niestandardowy interfejs.",
-    icon: (
-      <svg width="28" height="28" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
-        <path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/>
-      </svg>
-    ),
+    title: "Automatyczne raporty",
+    desc: "Lektos generuje raporty na podstawie danych z Twoich systemów i wysyła je według harmonogramu lub na żądanie. Modułowy silnik raportów pozwala dodać nowy raport bez pisania skryptu od zera.",
+  },
+  {
+    title: "Automatyzacja skrzynki mailowej",
+    desc: "System czyta przychodzące wiadomości, klasyfikuje je i wykonuje akcje automatycznie. Pracownik może też wydać polecenie przez czat - wysłać, skasować, przenieść, oflagować wiadomość bez otwierania skrzynki.",
+  },
+  {
+    title: "Panel w języku naturalnym",
+    desc: "Pracownicy zadają pytania (ile zamówień wczoraj, pokaż nieopłacone faktury, wyślij raport miesięczny) i otrzymują odpowiedzi oparte na danych z podłączonych systemów w czasie rzeczywistym.",
   },
   {
     title: "RAG i self-hosted LLM",
     desc: "Moduł RAG pozwala AI odpowiadać na pytania na podstawie Twojej dokumentacji, maili archiwalnych i bazy wiedzy (PostgreSQL + pgvector). Dla klientów z wymogami compliance wdrażamy modele open source (Llama, Mistral, Qwen) na infrastrukturze klienta - cały stack AI działa lokalnie.",
-    badge: "na zamówienie",
-    icon: (
-      <svg width="28" height="28" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
-        <path d="M12 2a9 9 0 100 18 9 9 0 000-18z"/>
-        <path d="M12 6v6l4 2"/>
-      </svg>
-    ),
+  },
+  {
+    title: "API dla integratorów",
+    desc: "Lektos API to multi-tenant warstwa REST/JSON, której mogą używać integratorzy Twoich systemów zewnętrznych. Własny system raportujący może wystawić dane do Lektosa standardowym API zamiast pisać niestandardowy interfejs.",
   },
 ];
-
 const KROKI = [
   {
     num: "01",
@@ -142,36 +102,23 @@ const KROKI = [
     desc: "Lektos działa. Monitorujemy, wprowadzamy poprawki, rozszerzamy system w miarę potrzeb. Stała współpraca w modelu retainera albo na zlecenie.",
   },
 ];
-
 const MODEL = [
   {
     title: "Infrastruktura zarządzana",
-    desc: "Dostarczamy i konfigurujemy infrastrukturę serwerową. Zarządzamy nią w całości - hosting, monitoring, backup, aktualizacje, bezpieczeństwo. Najszybszy start, najmniej obowiązków po Twojej stronie.",
+    desc: "Dostarczamy serwery i konfigurację. Hosting, monitoring, backup, aktualizacje, bezpieczeństwo - wszystko po naszej stronie. Klient płaci za usługi, nie zajmuje się infrastrukturą.",
     highlight: true,
   },
   {
-    title: "Wdrożenie u klienta",
-    desc: "Lektos na Twoich własnych serwerach. Pełna kontrola po Twojej stronie, my dostarczamy wiedzę i konfigurację. Polecane gdy masz infrastrukturę albo wymogi compliance wymagające lokalnego hostingu.",
-    highlight: false,
-  },
-  {
     title: "Wdrożenie hybrydowe",
-    desc: "Część komponentów u nas (np. konektory MCP, API), część u klienta (np. dane wrażliwe, LLM lokalny). Kompromis między szybkim startem a pełną kontrolą.",
-    highlight: false,
-  },
-  {
-    title: "Dedykowane wdrożenie",
-    desc: "Każdy element systemu projektujemy pod Twoje procesy. Dla nietypowych przypadków wymagających pracy od zera - integracje z systemami branżowymi, niestandardowe formaty danych, specyficzne workflow.",
+    desc: "Lektos jest systemem rozproszonym - komponenty działają na osobnych maszynach ze względu na różne czynniki, m.in. backup i failover. Jeśli klient chce mieć Lektos u siebie, musi dostarczyć prywatną chmurę (kilka serwerów). Możemy taką chmurę skonfigurować - dostarczamy zarówno gotowe wdrożenie u nas, jak i postawienie infrastruktury u klienta.",
     highlight: false,
   },
 ];
-
 // --- komponent ---
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [showTop, setShowTop] = useState(false);
-
   useEffect(() => {
     const onScroll = () => {
       const y = window.scrollY || document.documentElement.scrollTop;
@@ -181,12 +128,10 @@ export default function Home() {
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
     setMenuOpen(false);
   };
-
   const scrollToSection = (id: string) => {
     setMenuOpen(false);
     setTimeout(() => {
@@ -194,7 +139,6 @@ export default function Home() {
       if (el) el.scrollIntoView({ behavior: "smooth" });
     }, 50);
   };
-
   return (
     <div style={{ fontFamily: "var(--font-dm-sans), sans-serif", color: "#1a1929", backgroundColor: "#ffffff" }}>
       {/* ===== NAVBAR ===== */}
@@ -260,10 +204,8 @@ export default function Home() {
           </div>
         )}
       </nav>
-
       {/* ===== HERO + AKRONIM ===== */}
       <section id="start" style={{ position: "relative", overflow: "hidden", backgroundColor: "#ffffff" }}>
-        {/* czesc 1: hero */}
         <div style={{ position: "relative", minHeight: "calc(100vh - 68px)", display: "flex", alignItems: "center" }}>
           <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse 80% 60% at 70% 50%, #eeeef9 0%, transparent 70%)", pointerEvents: "none" }} />
           <div style={{ position: "absolute", right: "-6%", top: "50%", transform: "translateY(-50%)", fontFamily: "var(--font-sora), sans-serif", fontSize: "clamp(120px, 18vw, 280px)", fontWeight: 900, color: "rgba(61,59,142,0.05)", letterSpacing: -8, userSelect: "none", lineHeight: 1, whiteSpace: "nowrap", pointerEvents: "none" }}>
@@ -306,19 +248,14 @@ export default function Home() {
             </div>
           </div>
         </div>
-
-        {/* czesc 2: akronim */}
         <div style={{ borderTop: "1px solid #e8e8f4", backgroundColor: "#fafaff", padding: "72px 24px" }}>
           <div style={{ maxWidth: 1140, margin: "0 auto" }}>
-            {/* naglowek */}
             <div style={{ marginBottom: 48, maxWidth: 720 }}>
               <span style={{ fontFamily: "var(--font-sora), sans-serif", fontSize: 11, fontWeight: 700, color: "#3D3B8E", letterSpacing: 3, textTransform: "uppercase" }}>Akronim</span>
               <p style={{ fontFamily: "var(--font-sora), sans-serif", fontSize: "clamp(18px, 2.2vw, 22px)", fontWeight: 600, color: "#1a1929", lineHeight: 1.5, marginTop: 12, letterSpacing: -0.5 }}>
                 Lektos - z greki: wybrany, zebrany. Platforma zbiera dane z Twoich narzędzi i działa na ich podstawie.
               </p>
             </div>
-
-            {/* diagram poziomy z animacja */}
             <div style={{ marginBottom: 56, overflow: "hidden" }}>
               <svg viewBox="0 0 1080 220" xmlns="http://www.w3.org/2000/svg" style={{ width: "100%", height: "auto", display: "block" }}>
                 <defs>
@@ -362,8 +299,6 @@ export default function Home() {
                 })}
               </svg>
             </div>
-
-            {/* siatka kart 3x2 */}
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 12 }}>
               {AKRONIM.map((item) => (
                 <div key={item.letter} style={{ position: "relative", backgroundColor: "#ffffff", border: "1px solid #e8e8f4", borderRadius: 8, padding: "24px 20px", display: "flex", alignItems: "center", gap: 16, overflow: "hidden" }}>
@@ -379,96 +314,96 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      {/* ===== SYSTEM (z filozofia) ===== */}
+      {/* ===== SYSTEM ===== */}
       <section id="system" style={{ padding: "104px 24px", backgroundColor: "#1a1929" }}>
         <div style={{ maxWidth: 1140, margin: "0 auto" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 2fr", gap: 64, alignItems: "start", marginBottom: 96 }} className="lk-grid-2">
-            <div>
-              <div style={{ width: 48, height: 4, backgroundColor: "#3D3B8E", borderRadius: 2, marginBottom: 24 }} />
-              <h2 style={{ fontFamily: "var(--font-sora), sans-serif", fontSize: "clamp(28px, 4vw, 52px)", fontWeight: 800, color: "#ffffff", lineHeight: 1.08, letterSpacing: -1 }}>
-                System
-              </h2>
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-              <p style={{ fontSize: "clamp(16px, 1.8vw, 18px)", color: "rgba(255,255,255,0.78)", lineHeight: 1.9, margin: 0 }}>
-                Lektos to platforma automatyzacji operacji biznesowych łącząca obsługę poczty,
-                integracje z systemami zewnętrznymi i raportowanie w jednym miejscu.
-              </p>
-              <p style={{ fontSize: "clamp(16px, 1.8vw, 18px)", color: "rgba(255,255,255,0.7)", lineHeight: 1.9, margin: 0 }}>
-                System przetwarza przychodzące zapytania, wykonuje akcje w podłączonych
-                systemach i generuje raporty bez udziału człowieka. Pracownicy zadają
-                pytania w języku naturalnym przez wbudowany panel i dostają odpowiedzi
-                oparte na danych z podłączonych systemów.
-              </p>
-            </div>
+          <div style={{ marginBottom: 64, maxWidth: 820 }}>
+            <div style={{ width: 48, height: 4, backgroundColor: "#3D3B8E", borderRadius: 2, marginBottom: 24 }} />
+            <h2 style={{ fontFamily: "var(--font-sora), sans-serif", fontSize: "clamp(28px, 4vw, 52px)", fontWeight: 800, color: "#ffffff", lineHeight: 1.08, letterSpacing: -1, marginTop: 0, marginBottom: 28 }}>
+              System
+            </h2>
+            <p style={{ fontSize: "clamp(16px, 1.8vw, 18px)", color: "rgba(255,255,255,0.78)", lineHeight: 1.85, margin: 0 }}>
+              Lektos to system złożony z elementów, które współpracują ze sobą. Każdy element ma swoją rolę, a wartość powstaje z relacji między nimi. Poniżej opis budowy.
+            </p>
           </div>
-
-          <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)", paddingTop: 56 }}>
-            <div>
-              {FILOZOFIA.map((f, i) => (
-                <div key={f.title} style={{ display: "grid", gridTemplateColumns: "100px 1fr", gap: 32, alignItems: "start", padding: "32px 0", borderBottom: i < FILOZOFIA.length - 1 ? "1px solid rgba(255,255,255,0.08)" : "none" }} className="lk-filo-row">
-                  <div style={{ fontFamily: "var(--font-sora), sans-serif", fontSize: 36, fontWeight: 900, color: "rgba(255,255,255,0.18)", lineHeight: 1, letterSpacing: -2 }}>
-                    {String(i + 1).padStart(2, "0")}
-                  </div>
-                  <div>
-                    <h4 style={{ fontFamily: "var(--font-sora), sans-serif", fontSize: 20, fontWeight: 700, color: "#ffffff", marginBottom: 10, marginTop: 0, lineHeight: 1.2 }}>{f.title}</h4>
-                    <p style={{ fontSize: 15, color: "rgba(255,255,255,0.65)", lineHeight: 1.75, margin: 0, maxWidth: 720 }}>{f.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ===== FUNKCJE ===== */}
-      <section id="funkcje" style={{ padding: "104px 24px", backgroundColor: "#f7f7fc" }}>
-        <div style={{ maxWidth: 1140, margin: "0 auto" }}>
-          <div style={{ marginBottom: 64, maxWidth: 720 }}>
-            <span style={{ fontFamily: "var(--font-sora), sans-serif", fontSize: 11, fontWeight: 700, color: "#3D3B8E", letterSpacing: 3, textTransform: "uppercase" }}>Funkcje</span>
-            <h2 style={{ fontFamily: "var(--font-sora), sans-serif", fontSize: "clamp(28px, 4vw, 52px)", fontWeight: 800, color: "#1a1929", lineHeight: 1.08, marginTop: 12, letterSpacing: -1 }}>Co potrafi Lektos?</h2>
-          </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 1, backgroundColor: "#e8e8f4", border: "1px solid #e8e8f4" }}>
-            {FUNKCJE.map((f) => (
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 16 }} className="lk-sys-grid">
+            {SYSTEM_ELEMENTS.map((el, i) => (
               <div
-                key={f.title}
-                style={{ position: "relative", backgroundColor: "#ffffff", padding: 36, transition: "all 0.2s", cursor: "default" }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = "#3D3B8E";
-                  const icon = e.currentTarget.querySelector(".lk-fi") as HTMLElement;
-                  const title = e.currentTarget.querySelector(".lk-ft") as HTMLElement;
-                  const desc = e.currentTarget.querySelector(".lk-fd") as HTMLElement;
-                  const badge = e.currentTarget.querySelector(".lk-fb") as HTMLElement;
-                  if (icon) icon.style.color = "#ffffff";
-                  if (title) title.style.color = "#ffffff";
-                  if (desc) desc.style.color = "rgba(255,255,255,0.72)";
-                  if (badge) { badge.style.backgroundColor = "rgba(255,255,255,0.18)"; badge.style.color = "#ffffff"; }
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = "#ffffff";
-                  const icon = e.currentTarget.querySelector(".lk-fi") as HTMLElement;
-                  const title = e.currentTarget.querySelector(".lk-ft") as HTMLElement;
-                  const desc = e.currentTarget.querySelector(".lk-fd") as HTMLElement;
-                  const badge = e.currentTarget.querySelector(".lk-fb") as HTMLElement;
-                  if (icon) icon.style.color = "#3D3B8E";
-                  if (title) title.style.color = "#1a1929";
-                  if (desc) desc.style.color = "#4a4870";
-                  if (badge) { badge.style.backgroundColor = "#eeeef9"; badge.style.color = "#3D3B8E"; }
+                key={el.title}
+                className="lk-sys-card"
+                style={{
+                  gridColumn: el.wide ? "1 / -1" : "auto",
+                  backgroundColor: "#20203a",
+                  border: "1px solid rgba(255,255,255,0.06)",
+                  borderRadius: 12,
+                  padding: "36px 32px",
+                  position: "relative",
                 }}
               >
-                {f.badge && (
-                  <span className="lk-fb" style={{ position: "absolute", top: 20, right: 20, fontFamily: "var(--font-sora), sans-serif", fontSize: 10, fontWeight: 700, color: "#3D3B8E", backgroundColor: "#eeeef9", padding: "4px 10px", borderRadius: 100, letterSpacing: 1, textTransform: "uppercase", transition: "all 0.2s" }}>{f.badge}</span>
+                <div style={{ display: "flex", alignItems: "baseline", gap: 18, marginBottom: 18 }}>
+                  <span style={{ fontFamily: "var(--font-sora), sans-serif", fontSize: 28, fontWeight: 900, color: "rgba(61,59,142,0.55)", lineHeight: 1, letterSpacing: -1, flexShrink: 0 }}>
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <h3 style={{ fontFamily: "var(--font-sora), sans-serif", fontSize: 20, fontWeight: 700, color: "#ffffff", margin: 0, lineHeight: 1.25, letterSpacing: -0.3 }}>
+                    {el.title}
+                  </h3>
+                </div>
+                <p style={{ fontSize: 15, color: "rgba(255,255,255,0.72)", lineHeight: 1.8, margin: 0, marginLeft: 46 }}>
+                  {el.desc}
+                </p>
+                {el.desc2 && (
+                  <p style={{ fontSize: 15, color: "rgba(255,255,255,0.72)", lineHeight: 1.8, margin: "16px 0 0 46px" }}>
+                    {el.desc2}
+                  </p>
                 )}
-                <div className="lk-fi" style={{ color: "#3D3B8E", marginBottom: 20, transition: "color 0.2s" }}>{f.icon}</div>
-                <h3 className="lk-ft" style={{ fontFamily: "var(--font-sora), sans-serif", fontSize: 17, fontWeight: 700, color: "#1a1929", marginBottom: 14, lineHeight: 1.3, transition: "color 0.2s" }}>{f.title}</h3>
-                <p className="lk-fd" style={{ fontSize: 14, color: "#4a4870", lineHeight: 1.75, transition: "color 0.2s" }}>{f.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
-
+      {/* ===== FUNKCJE ===== */}
+      <section id="funkcje" style={{ padding: "104px 24px", backgroundColor: "#f7f7fc" }}>
+        <div style={{ maxWidth: 1140, margin: "0 auto" }}>
+          <div style={{ marginBottom: 64, maxWidth: 820 }}>
+            <div style={{ width: 48, height: 4, backgroundColor: "#3D3B8E", borderRadius: 2, marginBottom: 24 }} />
+            <span style={{ fontFamily: "var(--font-sora), sans-serif", fontSize: 11, fontWeight: 700, color: "#3D3B8E", letterSpacing: 3, textTransform: "uppercase" }}>Funkcje</span>
+            <h2 style={{ fontFamily: "var(--font-sora), sans-serif", fontSize: "clamp(28px, 4vw, 52px)", fontWeight: 800, color: "#1a1929", lineHeight: 1.08, letterSpacing: -1, marginTop: 12, marginBottom: 28 }}>
+              Co potrafi Lektos?
+            </h2>
+            <p style={{ fontSize: "clamp(16px, 1.8vw, 18px)", color: "#4a4870", lineHeight: 1.85, margin: 0 }}>
+              Funkcje systemu - od fundamentu integracji, przez codzienną pracę, po zaawansowane opcje dla integratorów zewnętrznych.
+            </p>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 16 }} className="lk-sys-grid">
+            {FUNKCJE.map((f, i) => (
+              <div
+                key={f.title}
+                className="lk-sys-card"
+                style={{
+                  gridColumn: f.wide ? "1 / -1" : "auto",
+                  backgroundColor: "#ffffff",
+                  border: "1px solid #e8e8f4",
+                  borderRadius: 12,
+                  padding: "36px 32px",
+                  position: "relative",
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "baseline", gap: 18, marginBottom: 18 }}>
+                  <span style={{ fontFamily: "var(--font-sora), sans-serif", fontSize: 28, fontWeight: 900, color: "rgba(61,59,142,0.35)", lineHeight: 1, letterSpacing: -1, flexShrink: 0 }}>
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <h3 style={{ fontFamily: "var(--font-sora), sans-serif", fontSize: 20, fontWeight: 700, color: "#1a1929", margin: 0, lineHeight: 1.25, letterSpacing: -0.3 }}>
+                    {f.title}
+                  </h3>
+                </div>
+                <p style={{ fontSize: 15, color: "#4a4870", lineHeight: 1.8, margin: 0, marginLeft: 46 }}>
+                  {f.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
       {/* ===== WDROZENIE + MODEL ===== */}
       <section id="wdrozenie" style={{ padding: "104px 24px", backgroundColor: "#ffffff" }}>
         <div style={{ maxWidth: 1140, margin: "0 auto" }}>
@@ -487,13 +422,12 @@ export default function Home() {
               ))}
             </div>
           </div>
-
           <div>
             <div style={{ marginBottom: 48, maxWidth: 720 }}>
               <span style={{ fontFamily: "var(--font-sora), sans-serif", fontSize: 11, fontWeight: 700, color: "#3D3B8E", letterSpacing: 3, textTransform: "uppercase" }}>Model współpracy</span>
-              <h2 style={{ fontFamily: "var(--font-sora), sans-serif", fontSize: "clamp(26px, 3.5vw, 44px)", fontWeight: 800, color: "#1a1929", lineHeight: 1.1, marginTop: 12, letterSpacing: -1 }}>Jak możemy współpracować?</h2>
+              <h2 style={{ fontFamily: "var(--font-sora), sans-serif", fontSize: "clamp(26px, 3.5vw, 44px)", fontWeight: 800, color: "#1a1929", lineHeight: 1.1, marginTop: 12, letterSpacing: -1 }}>Warianty wdrożenia</h2>
             </div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 20, marginBottom: 32 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 20, marginBottom: 32 }}>
               {MODEL.map((m) => (
                 <div key={m.title} style={{ backgroundColor: m.highlight ? "#3D3B8E" : "#f7f7fc", borderRadius: 12, padding: "32px 28px", border: m.highlight ? "none" : "1px solid #e8e8f4" }}>
                   <h3 style={{ fontFamily: "var(--font-sora), sans-serif", fontSize: 17, fontWeight: 700, color: m.highlight ? "#ffffff" : "#1a1929", marginBottom: 12, lineHeight: 1.2 }}>{m.title}</h3>
@@ -511,7 +445,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       {/* ===== KONTAKT ===== */}
       <section id="kontakt" style={{ padding: "104px 24px", backgroundColor: "#1a1929", position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", left: -80, top: "50%", transform: "translateY(-50%)", width: 480, height: 480, borderRadius: "50%", background: "radial-gradient(circle, rgba(61,59,142,0.35) 0%, transparent 70%)", pointerEvents: "none" }} />
@@ -543,15 +476,13 @@ export default function Home() {
             style={{ fontFamily: "var(--font-dm-sans), sans-serif", fontSize: 15, color: "rgba(255,255,255,0.38)", textDecoration: "none", transition: "color 0.2s" }}
             onMouseEnter={(e) => e.currentTarget.style.color = "rgba(255,255,255,0.7)"}
             onMouseLeave={(e) => e.currentTarget.style.color = "rgba(255,255,255,0.38)"}
-          >www.synchronicity.one</a>
+          >[www.synchronicity.one](https://www.synchronicity.one)</a>
         </div>
       </section>
-
       {/* ===== FOOTER ===== */}
       <footer style={{ backgroundColor: "#111120", color: "rgba(255,255,255,0.28)", padding: "24px", textAlign: "center", fontSize: 13, fontFamily: "var(--font-dm-sans), sans-serif" }}>
         <p style={{ margin: 0 }}>&copy; {new Date().getFullYear()} Lektos.pl</p>
       </footer>
-
       {/* ===== BACK TO TOP ===== */}
       {showTop && (
         <button
@@ -566,11 +497,12 @@ export default function Home() {
           </svg>
         </button>
       )}
-
       <style>{`
         @media (max-width: 768px) {
           .lk-desktop { display: none !important; }
           .lk-grid-2 { grid-template-columns: 1fr !important; gap: 32px !important; }
+          .lk-sys-grid { grid-template-columns: 1fr !important; }
+          .lk-sys-card { padding: 28px 22px !important; }
           .lk-krok { padding-left: 0 !important; padding-right: 0 !important; border-right: none !important; padding-top: 28px !important; border-top: 1px solid #e8e8f4; }
           .lk-kroki > div:first-child { border-top: none !important; padding-top: 0 !important; }
         }
