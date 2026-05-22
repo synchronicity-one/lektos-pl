@@ -114,6 +114,37 @@ const MODEL = [
     highlight: false,
   },
 ];
+const heroSchema = (
+  <svg viewBox="0 0 680 480" xmlns="http://www.w3.org/2000/svg" style={{ width: "100%", height: "auto", display: "block" }}>
+              <line x1="340" y1="240" x2="160" y2="100" stroke="#3D3B8E" strokeWidth="1.5" strokeOpacity="0.3"/>
+              <line x1="340" y1="240" x2="520" y2="100" stroke="#3D3B8E" strokeWidth="1.5" strokeOpacity="0.3"/>
+              <line x1="340" y1="240" x2="110" y2="240" stroke="#3D3B8E" strokeWidth="1.5" strokeOpacity="0.3"/>
+              <line x1="340" y1="240" x2="570" y2="240" stroke="#3D3B8E" strokeWidth="1.5" strokeOpacity="0.3"/>
+              <line x1="340" y1="240" x2="160" y2="380" stroke="#3D3B8E" strokeWidth="1.5" strokeOpacity="0.3"/>
+              <line x1="340" y1="240" x2="520" y2="380" stroke="#3D3B8E" strokeWidth="1.5" strokeOpacity="0.3"/>
+              <circle r="4.5" fill="#ff4081"><animateMotion dur="3s" repeatCount="indefinite" path="M160 100 L340 240"/></circle>
+              <circle r="4.5" fill="#ff4081"><animateMotion dur="3s" begin="0.5s" repeatCount="indefinite" path="M340 240 L520 100"/></circle>
+              <circle r="4.5" fill="#ff4081"><animateMotion dur="3s" begin="1s" repeatCount="indefinite" path="M110 240 L340 240"/></circle>
+              <circle r="4.5" fill="#ff4081"><animateMotion dur="3s" begin="1.5s" repeatCount="indefinite" path="M340 240 L570 240"/></circle>
+              <circle r="4.5" fill="#ff4081"><animateMotion dur="3s" begin="2s" repeatCount="indefinite" path="M160 380 L340 240"/></circle>
+              <circle r="4.5" fill="#ff4081"><animateMotion dur="3s" begin="2.5s" repeatCount="indefinite" path="M340 240 L520 380"/></circle>
+              <circle cx="160" cy="100" r="30" fill="#fafaff" stroke="#3D3B8E" strokeWidth="2"/>
+              <circle cx="520" cy="100" r="30" fill="#fafaff" stroke="#3D3B8E" strokeWidth="2"/>
+              <circle cx="110" cy="240" r="30" fill="#fafaff" stroke="#3D3B8E" strokeWidth="2"/>
+              <circle cx="570" cy="240" r="30" fill="#fafaff" stroke="#3D3B8E" strokeWidth="2"/>
+              <circle cx="160" cy="380" r="30" fill="#fafaff" stroke="#3D3B8E" strokeWidth="2"/>
+              <circle cx="520" cy="380" r="30" fill="#fafaff" stroke="#3D3B8E" strokeWidth="2"/>
+              <circle cx="160" cy="100" r="6" fill="#3D3B8E"/>
+              <circle cx="520" cy="100" r="6" fill="#3D3B8E"/>
+              <circle cx="110" cy="240" r="6" fill="#3D3B8E"/>
+              <circle cx="570" cy="240" r="6" fill="#3D3B8E"/>
+              <circle cx="160" cy="380" r="6" fill="#3D3B8E"/>
+              <circle cx="520" cy="380" r="6" fill="#3D3B8E"/>
+              <circle cx="340" cy="240" r="54" fill="#3D3B8E"/>
+              <circle cx="340" cy="240" r="64" fill="none" stroke="#3D3B8E" strokeWidth="1.5" strokeOpacity="0.3"/>
+              <text x="340" y="248" textAnchor="middle" fontFamily="var(--font-sora), sans-serif" fontSize="22" fontWeight="900" fill="#ffffff">L</text>
+            </svg>
+);
 // --- komponent ---
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -208,26 +239,27 @@ export default function Home() {
       <section id="start" style={{ position: "relative", overflow: "hidden", backgroundColor: "#ffffff" }}>
         <div style={{ position: "relative", minHeight: "calc(100vh - 68px)", display: "flex", alignItems: "center" }}>
           <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse 80% 60% at 70% 50%, #eeeef9 0%, transparent 70%)", pointerEvents: "none" }} />
-          <div style={{ position: "absolute", right: "-6%", top: "50%", transform: "translateY(-50%)", fontFamily: "var(--font-sora), sans-serif", fontSize: "clamp(120px, 18vw, 280px)", fontWeight: 900, color: "rgba(61,59,142,0.05)", letterSpacing: -8, userSelect: "none", lineHeight: 1, whiteSpace: "nowrap", pointerEvents: "none" }}>
-            LEKTOS
-          </div>
           <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 4, background: "linear-gradient(180deg, transparent 0%, #3D3B8E 30%, #3D3B8E 70%, transparent 100%)" }} />
-          <div style={{ position: "relative", maxWidth: 1140, margin: "0 auto", padding: "80px 24px 80px 48px", width: "100%" }}>
-            <div style={{ maxWidth: 660 }}>
+          <div style={{ position: "relative", maxWidth: 1140, margin: "0 auto", padding: "60px 24px", width: "100%", display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 40 }} className="lk-hero-row">
+            <div className="lk-hero-text" style={{ width: "100%" }}>
               <div style={{ display: "inline-flex", alignItems: "center", gap: 8, backgroundColor: "#eeeef9", borderRadius: 100, padding: "6px 16px", marginBottom: 32 }}>
                 <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: "#3D3B8E" }} />
                 <span style={{ fontFamily: "var(--font-sora), sans-serif", fontSize: 11, fontWeight: 700, color: "#3D3B8E", letterSpacing: 2, textTransform: "uppercase" }}>Connect. Automate. Ask.</span>
               </div>
-              <h1 style={{ fontFamily: "var(--font-sora), sans-serif", fontSize: "clamp(38px, 6vw, 68px)", fontWeight: 800, color: "#1a1929", lineHeight: 1.08, marginBottom: 28, letterSpacing: -2 }}>
-                Intelligent<br />
-                Business<br />
-                <span style={{ color: "#3D3B8E" }}>Automation</span>
+              <h1 style={{ fontFamily: "var(--font-sora), sans-serif", fontSize: "clamp(34px, 5.2vw, 60px)", fontWeight: 800, color: "#1a1929", lineHeight: 1.1, marginBottom: 14, letterSpacing: -1.5 }}>
+                Lektos <span style={{ color: "#3D3B8E" }}>automatyzacja operacji biznesowych</span>
               </h1>
+              <p style={{ fontFamily: "var(--font-sora), sans-serif", fontSize: "clamp(14px, 1.7vw, 17px)", fontWeight: 700, color: "#3D3B8E", letterSpacing: 1, marginBottom: 28, textTransform: "uppercase" }}>
+                Intelligent Business Automation
+              </p>
               <p style={{ fontSize: "clamp(16px, 2vw, 18px)", color: "#4a4870", lineHeight: 1.8, marginBottom: 20, maxWidth: 540 }}>
                 Twoje systemy generują dane. Twoi pracownicy tracą czas na ręczne zadania.
-                Lektos to zmienia - łączy systemy, automatyzuje operacje i odpowiada
+                Lektos to zmienia: łączy systemy, automatyzuje operacje i odpowiada
                 na pytania w języku naturalnym.
               </p>
+              <div className="lk-hero-schema-mobile" style={{ width: "100%", maxWidth: 360, margin: "8px auto 28px", pointerEvents: "none" }}>
+                {heroSchema}
+              </div>
               <p style={{ fontSize: "clamp(14px, 1.6vw, 15px)", color: "#3D3B8E", fontWeight: 600, lineHeight: 1.7, marginBottom: 44, maxWidth: 540 }}>
                 Lektos tworzymy przy użyciu otwartych narzędzi takich jak Linux i Python, bez warstw pośrednich i bez vendor lock-in. Nie składamy systemu z gotowych klocków no-code i low-code (np. n8n, Make.com, Vapi, Retell, ElevenLabs). Piszemy własny kod, który rozumiemy i za który bierzemy odpowiedzialność.
               </p>
@@ -245,6 +277,9 @@ export default function Home() {
                   onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = "#3D3B8E"; }}
                 >Zadaj pytanie</button>
               </div>
+            </div>
+            <div className="lk-hero-schema-desktop" style={{ flex: "1 1 0", minWidth: 0, maxWidth: 480, pointerEvents: "none" }}>
+              {heroSchema}
             </div>
           </div>
         </div>
@@ -269,21 +304,6 @@ export default function Home() {
                 <g>
                   <circle r="6" fill="#ff4081">
                     <animateMotion dur="6s" repeatCount="indefinite" path="M 90 80 L 990 80"/>
-                  </circle>
-                  <circle r="6" fill="#ff4081">
-                    <animateMotion dur="6s" begin="1s" repeatCount="indefinite" path="M 90 80 L 990 80"/>
-                  </circle>
-                  <circle r="6" fill="#ff4081">
-                    <animateMotion dur="6s" begin="2s" repeatCount="indefinite" path="M 90 80 L 990 80"/>
-                  </circle>
-                  <circle r="6" fill="#ff4081">
-                    <animateMotion dur="6s" begin="3s" repeatCount="indefinite" path="M 90 80 L 990 80"/>
-                  </circle>
-                  <circle r="6" fill="#ff4081">
-                    <animateMotion dur="6s" begin="4s" repeatCount="indefinite" path="M 90 80 L 990 80"/>
-                  </circle>
-                  <circle r="6" fill="#ff4081">
-                    <animateMotion dur="6s" begin="5s" repeatCount="indefinite" path="M 90 80 L 990 80"/>
                   </circle>
                 </g>
                 {AKRONIM.map((item, i) => {
@@ -500,6 +520,7 @@ export default function Home() {
       <style>{`
         @media (max-width: 768px) {
           .lk-desktop { display: none !important; }
+          .lk-hero-schema-desktop { display: none !important; }
           .lk-grid-2 { grid-template-columns: 1fr !important; gap: 32px !important; }
           .lk-sys-grid { grid-template-columns: 1fr !important; }
           .lk-sys-card { padding: 28px 22px !important; }
@@ -508,6 +529,10 @@ export default function Home() {
         }
         @media (min-width: 769px) {
           .lk-mobile { display: none !important; }
+          .lk-hero-row { flex-direction: row !important; align-items: center !important; gap: 48px !important; padding: 80px 24px 80px 48px !important; }
+          .lk-hero-text { flex: 1 1 0 !important; min-width: 0 !important; max-width: 600px !important; }
+          .lk-hero-schema-mobile { display: none !important; }
+          .lk-hero-schema-desktop { flex: 1 1 0 !important; min-width: 0 !important; max-width: 480px !important; }
         }
         * { box-sizing: border-box; }
         body { margin: 0; overflow-x: hidden; }
