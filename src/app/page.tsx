@@ -68,7 +68,7 @@ const FUNKCJE = [
   },
   {
     title: "RAG i self-hosted LLM",
-    desc: "Moduł RAG pozwala AI odpowiadać na pytania na podstawie Twojej dokumentacji, maili archiwalnych i bazy wiedzy. Dla klientów z wymogami compliance wdrażamy modele open source (Llama, Mistral, Qwen) na infrastrukturze klienta - cały stack AI działa lokalnie.",
+    desc: "Moduł RAG pozwala AI odpowiadać na pytania na podstawie Twojej dokumentacji, maili archiwalnych i bazy wiedzy. Dla klientów z wymogami compliance wdrażamy modele open source (Llama, Mistral, Qwen) na infrastrukturze klienta - cały stack AI działa lokalnie, bez wysyłania firmowych danych do Google Gemini, OpenAI czy innych chmur AI.",
   },
   {
     title: "API dla integratorów",
@@ -261,7 +261,7 @@ export default function Home() {
                 {heroSchema}
               </div>
               <p style={{ fontSize: "clamp(14px, 1.6vw, 15px)", color: "#3D3B8E", fontWeight: 600, lineHeight: 1.7, marginBottom: 44, maxWidth: 540 }}>
-                Lektos tworzymy przy użyciu otwartych narzędzi takich jak Linux i Python, bez warstw pośrednich i bez vendor lock-in. Nie składamy systemu z gotowych klocków no-code i low-code (np. n8n, Make.com, Vapi, Retell, ElevenLabs). Piszemy własny kod, który rozumiemy i za który bierzemy odpowiedzialność.
+                Lektos tworzymy przy użyciu otwartych narzędzi takich jak Linux i Python, bez warstw pośrednich i bez vendor lock-in. Nie składamy systemu z gotowych klocków no-code i low-code (np. n8n, Make.com, Vapi, Retell, ElevenLabs) ani nie oddajemy logiki firmy zarządzanym agentom w chmurze dostawcy (Google Gemini API, Vertex AI, managed agents). Piszemy własny kod, który rozumiemy i za który bierzemy odpowiedzialność.
               </p>
               <div style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
                 <button
